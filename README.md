@@ -199,7 +199,7 @@ Deutung:
 
 ### relative Schiefemass
 Formel:
-$S=\frac{N*M_3}{(N-1)*(N-2)*\sigma^3}$
+$S=\frac{N*M_{3}}{(N-1)*(N-2)*\sigma^3}$
 
 in R:
 ```
@@ -252,20 +252,27 @@ lines(x,y,col="purple")
 ```
 
 
+
+### Perzentilkoeffizient der Kurtosis
+<!-- TODO -->
+
 ## lineares Modell
 siehe 30.10.großeDatenalayse.R
 <!-- TODO -->
 Beispiel von der Vorlesung in R: 
 ```
-daxdaten <- EuStockMarkets[, 1]
-cacdaten <- EuStockMarkets[, 3]
+daxdaten <- EuStockMarkets[, 1] # unabhängige variable
+cacdaten <- EuStockMarkets[, 3] # abhängige variable
 length(daxdaten) == length(cacdaten)
+# plot(unabhängige variable, abhängige variable)
 plot(daxdaten, cacdaten)
 grid()
 abline(v=mean(daxdaten))
 abline(h=mean(cacdaten))
 # Lineares modell erstellen und in lmdaxcac speichern
+# lm(abhängige variable, unabhängige variable)
 lmdaxcac <- lm(cacdaten ~ daxdaten)
+# Multiple R-squared ablesen
 summary(lmdaxcac)
 abline(coef(lmdaxcac), col="blue")
 ```
