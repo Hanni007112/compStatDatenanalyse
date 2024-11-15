@@ -199,7 +199,7 @@ Deutung:
 
 ### relative Schiefemass
 Formel:
-$S=\frac{N*M_{3}}{(N-1)*(N-2)*\sigma^{3}}$
+$S=\frac{N*M_{3}}{(N-1)*(N-2)*sigma^{3}}$
 
 in R:
 ```
@@ -222,7 +222,7 @@ in R
 ## Wobungsmaß Kurtosis
 <!-- TODO -->
 Formel:
-$k = \frac{N*(N+1)*M_4 - 3*(N-1)*M_2^2 }{(N-1)(N-2)(N-3)*sigma^4}$
+$k = \frac{N*(N+1)*M_4 - 3*(N-1)*M_2^2 }{(N-1)(N-2)(N-3)*\sigma^4}$
 
 in R
 ```
