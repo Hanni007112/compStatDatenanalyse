@@ -167,6 +167,13 @@ sigma <- sd(X)
 
 ## Sigma intervalle
 
+Es gibt definierte Intervalle:
+- $I_{1} = ]\overline{x}- 3\sigma; \overline{x}- 2\sigma]$
+- $I_{2} = ]\overline{x}- 2\sigma; \overline{x}-\sigma]$
+- $I_{3} = ]\overline{x}-\sigma; \overline{x}]$
+- $I_{4} = ]\overline{x}; \overline{x}+\sigma]$
+- $I_{5} = ]\overline{x}+ \sigma; \overline{x}+2\sigma]$
+- $I_{6} = ]\overline{x}+ 2\sigma; \overline{x}+3\sigma]$
 <!-- TODO -->
 
 
@@ -198,7 +205,7 @@ in R:
 ```
 M3 <- sum((X - mean(X))^3)
 N <- length(X)
-S <- (N * M3) / ((N - 1) * (N - 2) * sd(x)^3)
+S <- (N * M3) / ((N - 1) * (N - 2) * sd(X)^3)
 ```
 
 Deutung:
@@ -206,19 +213,40 @@ Deutung:
 - $S= 0$ Der Graph ist nahezu symmetrisch
 - $S< 0$ Der Graph ist rechtssteil und linkssschief 
 
+### Pearsons Schiefekoeffizient
+Formel:
+in R
+
+<!-- TODO -->
 
 ## Wobungsmaß Kurtosis
 <!-- TODO -->
+Formel:
+$k = \frac{N*(N+1)*M_4 - 3*(N-1)*M_2^2 }{(N-1)(N-2)(N-3)*\sigma^4}$
+
+in R
+```
+M2 <- sum((X - mean(X))^2)
+M4 <- sum((X - mean(X))^4)
+N <- length(X)
+  
+kurtosis <- (N * (N + 1) * M4 - 3 * (N - 1) * M2^2) / ((N - 1) * (N - 2) * (N - 3) * sd(X)^4)
+```
+
+Deutung:
+- $k > 0$ Der Graph ist leptokurtisch, stark gewölbt oder hochgipfelig
+- $k = 0$ Der Hraph ist mesokurtisch, nahezu "normal" gewölbt
+- $k < 0$ Der Graph ist platykurtisch, flachgewölbt oder flachgipfelig
 
 
-wie legt man die Übereinander mit der dichtefunktion??
+wie legt man die Normalverteilung mit der empirischen Dichtefunktion übereinander?
 -> 
 ``` 
 plot(density(X))
 my <- mean(X)
 N <- length(X)
-s <- sd(X) * sqrt((N-1)/N) #stdabweichung von der Grundgesamtheit#
-x<- seq(my-3*s, my+3*s, by=s/8)
+s <- sd(X) * sqrt((N-1)/N) #stdabweichung von der Grundgesamtheit#´
+x <- seq(my-3*s, my+3*s, by=s/8)
 y <- dnorm(x, my, s)
 lines(x,y,col="purple")
 ```
@@ -227,9 +255,30 @@ lines(x,y,col="purple")
 ## lineares Modell
 siehe 30.10.großeDatenalayse.R
 <!-- TODO -->
+Beispiel von der Vorlesung in R: 
+```
+daxdaten <- EuStockMarkets[, 1]
+cacdaten <- EuStockMarkets[, 3]
+length(daxdaten) == length(cacdaten)
+plot(daxdaten, cacdaten)
+grid()
+abline(v=mean(daxdaten))
+abline(h=mean(cacdaten))
+# Lineares modell erstellen und in lmdaxcac speichern
+lmdaxcac <- lm(cacdaten ~ daxdaten)
+summary(lmdaxcac)
+abline(coef(lmdaxcac), col="blue")
+```
 
+
+
+auch bitte die untersuchung nach abhänhgigkeit und den ganzen spaß
+
+halt alles was dazugehört
 
 ## induktive Statistik 
 hier hab ich nicht aufgepasst 
 keine Ahnung
 <!-- TODO -->
+### Normalverteilung
+
