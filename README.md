@@ -123,6 +123,8 @@ Falls wir werte generieren sollen, müssen wir aufschreiben womit wir das gemach
     - `q <- as.vector(quantile(X))`
     - `sq <- ((q[4] - mean(X)) - (mean(X) - q[2])) / IQR(X)`
 
+<!-- TODO -->
+
 Ich glaube das war es. Ich kann mir vorstelllen das wir aber auch Standartabweichung, Kurtosis und alles sowas hier auch machem müssen 
 aber dazu hat er halt nichts mehr gesagt.
 
@@ -134,15 +136,82 @@ Wert der am häufigsten vorkommt.
 - Wenn zwei verschiedene Werte Modalwert sind, sprechen wir von einer bimodalen Statistik, 
 - Wenn mehr als zwei verschiedene Werte Modalwert sind, sprechen wir von einer multimodalen Statistik.
 
-## Sigma intervalle
-## Schiefemass
-2 Stück gibts glaub ich 
+In R ablesbar mithilfe von `table(X)`
 
-S 
-und 
-$S_Q$
+## Streuungsmasse
+### Zentrales empirisches Moment r-ter Ordnung
+Formel:
+$M_{r}=\sum_{n=1}^{N}(x_{n}-\overline{x})^r$
+
+in R:
+```
+sum((X - mean(X))^r)
+```
+ 
+### Varinaz
+Formel:
+$Var(x)=\frac{M_{2}}{N}$
+
+in R:
+```
+Var <- sum((X - mean(X))^2) / length(X)
+```
+
+### Sigma/ standart deviation / Standartabweichung
+$\sigma= \sqrt{Var(X)}$
+
+in R:
+```
+sigma <- sd(X)
+```
+
+## Sigma intervalle
+
+<!-- TODO -->
+
+
+## Schiefemass / Symmetriemass
+
+### Quartilskoeffizient der Schiefe 
+
+Formel:
+$S_Q = \frac{(3.Q. - \widetilde{x})-(\widetilde{x}-1.Q)}{IQR}$
+oder auch
+$S_Q = \frac{(3.Q. - 2.Q.)-(2.Q.-1.Q)}{IQR}$
+
+in R: 
+``` R
+q <- as.vector(quantile(X))
+sq <- ((q[4] - median(X)) - (median(X) - q[2])) / IQR(X)
+```
+
+Deutung:
+- $s_Q > 0$ Der Graph ist linkssteil und rechtsschief
+- $s_Q = 0$ Der Graph ist nahezu symmetrisch
+- $s_Q < 0$ Der Graph ist rechtssteil und linkssschief
+
+### relative Schiefemass
+Formel:
+$S=\frac{N*M_3}{(N-1)*(N-2)*\sigma^3}$
+
+in R:
+```
+M3 <- sum((X - mean(X))^3)
+N <- length(X)
+S <- (N * M3) / ((N - 1) * (N - 2) * sd(x)^3)
+```
+
+Deutung:
+- $S > 0$ Der Graph ist linkssteil und rechtsschief
+- $S= 0$ Der Graph ist nahezu symmetrisch
+- $S< 0$ Der Graph ist rechtssteil und linkssschief 
+
+
 ## Wobungsmaß Kurtosis
-wie legt man die Übereinander?
+<!-- TODO -->
+
+
+wie legt man die Übereinander mit der dichtefunktion??
 -> 
 ``` 
 plot(density(X))
@@ -155,15 +224,12 @@ lines(x,y,col="purple")
 ```
 
 
-## Streuungsmasse
-Zentrales empirisches moment
-
-Varinaz
-
 ## lineares Modell
 siehe 30.10.großeDatenalayse.R
+<!-- TODO -->
 
 
 ## induktive Statistik 
 hier hab ich nicht aufgepasst 
 keine Ahnung
+<!-- TODO -->
