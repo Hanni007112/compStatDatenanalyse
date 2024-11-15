@@ -52,6 +52,11 @@ Wertezuweisung:
 		- Standartabweichung in R: $\sqrt{\frac{1}{N-1}\sum_{n=1}^{N}(X_{n} - \overline{x})^{2}}$  als R Ausdruck : `sqrt(sum((X-mean(X))^2)/(length(X)-1))` oder Einfacher: `sd(X)`
 		- Standartabweichung unsere Definition: $\sqrt{\frac{1}{N}\sum_{n=1}^{N}(X_{n} - \overline{x})^{2}}$ als R Ausdruck: `sqrt(sum((X-mean(X))^2)/length(X))`
 
+## Merkmalsskalen
+- nominal
+- ordinal
+- metrisch
+
 ## Lagemasse
 - minimum 
 - maximum
@@ -119,9 +124,10 @@ Falls wir werte generieren sollen, müssen wir aufschreiben womit wir das gemach
     - R: `sd(X)` 
     - unsere Definition: `sqrt(sum((X-mean(X))^2)/length(X))`
 
-- Schiefe berechnen mit: 
-    - `q <- as.vector(quantile(X))`
-    - `sq <- ((q[4] - mean(X)) - (mean(X) - q[2])) / IQR(X)`
+- Schiefe berechnen 3 mal? mit: 
+<!-- TODO -->
+    - `
+
 
 <!-- TODO -->
 
@@ -213,14 +219,31 @@ Deutung:
 - $S= 0$ Der Graph ist nahezu symmetrisch
 - $S< 0$ Der Graph ist rechtssteil und linkssschief 
 
-### Pearsons Schiefekoeffizient
+### Pearsons 1. Schiefekoeffizient
 Formel:
-in R
+$S_1\frac{3*(\overline{x} - modalwert)}{\sigma}$
 
-<!-- TODO -->
+
+in R :
+```
+S2 <- (mean(X)-modalwert)/sd(X)>
+```
+
+Deutung: wie immer
+
+### Persons 2. Schiefekoeffizient
+Formel:
+$S_2\frac{\overline{x} - \widetilde{x}}{\sigma}$
+
+
+in R :
+```
+S2 <- (mean(X)-median(X))/sd(X)>
+```
+
+Deutung: wie immer
 
 ## Wobungsmaß Kurtosis
-<!-- TODO -->
 Formel:
 $k = \frac{N(N+1)M_4 - 3(N-1)M_2^2 }{(N-1)(N-2)(N-3)\sigma^4}$
 
@@ -251,41 +274,125 @@ y <- dnorm(x, my, s)
 lines(x,y,col="purple")
 ```
 
-
-
 ### Perzentilkoeffizient der Kurtosis
-<!-- TODO -->
+formel:
+$c = \frac{IQR}{Q_{90\%}-Q_{10\%}}$
+
+in R:
+```
+
+c <- IQR(X)/ (quantile(X,0.9) - quantile(X,0.1))
+```
 
 ## lineares Modell
 siehe 30.10.großeDatenalayse.R
 <!-- TODO -->
-Beispiel von der Vorlesung in R: 
+**Streuungdiagramm**
 ```
 daxdaten <- EuStockMarkets[, 1] # unabhängige variable
 cacdaten <- EuStockMarkets[, 3] # abhängige variable
-length(daxdaten) == length(cacdaten)
+length(daxdaten) == length(cacdaten) # Bedingung
 # plot(unabhängige variable, abhängige variable)
 plot(daxdaten, cacdaten)
 grid()
 abline(v=mean(daxdaten))
 abline(h=mean(cacdaten))
-# Lineares modell erstellen und in lmdaxcac speichern
+```
+
+**Lineares Modell erstellen**
+```
 # lm(abhängige variable, unabhängige variable)
 lmdaxcac <- lm(cacdaten ~ daxdaten)
-# Multiple R-squared ablesen
-summary(lmdaxcac)
+# Zeigt daten des lm an -> u.a R-Squared, Residualstandardabweichung...
+sum<-as.vector(summary(lmdaxcac))
+```
+
+**Korrelationsgerade**
+```
 abline(coef(lmdaxcac), col="blue")
 ```
 
+**Korrelationskoeffizient**
+```
+# Wurzel aus R-Squared
+r <- sqrt(sum[9])
+```
+**Zusammenfassung**
+```
+daxdaten <- EuStockMarkets[, 1] # unabhängige variable
+cacdaten <- EuStockMarkets[, 3] # abhängige variable
+length(daxdaten) == length(cacdaten)
+plot(daxdaten, cacdaten)
+grid()
+abline(v=mean(daxdaten))
+abline(h=mean(cacdaten))
+lmdaxcac <- lm(cacdaten ~ daxdaten)
+sum<-as.vector(summary(lmdaxcac))
+abline(coef(lmdaxcac), col="blue")
+sqrt(sum[9])
+```
 
+### Persons Korellationskoeffizient
 
-auch bitte die untersuchung nach abhänhgigkeit und den ganzen spaß
+Kovarianz
 
-halt alles was dazugehört
+$cov(X, Y) = \frac{\sum((X - \overline{X}) (Y - \overline{Y}))}{N - 1}$
+ 
+X und Y müssen gleich lange sein -> length von X oder Y als N
+
+Korrelationskoeffizient 
+
+$r = \frac{cov(X, Y)}{sd(X) sd(Y)}$
+
+in R:
+```
+X <- c(...) # unabhängige Var.
+Y <- c(...) # abhängige Var.
+length(X) == length(Y)
+
+# Korellationskoeffizient mit R-Funktion
+cor(X, Y)
+
+summary(lm(Y~X))
+
+cov <- sum((X- mean(X)) * (Y - mean(Y))) / (length(X) - 1)
+
+sdX <- sd(X)
+sdY <- sd(Y)
+myr <- cov / (X * Y)
+myr
+```
+
+Für r gilt immer $-1 \le r \le 1$:
+
+1. Im Falle $|r| > 0,5$ sagen wir, dass eine relativ starke Korrelation besteht
+2. Im Falle $|r| > 0,8$ sagen wir, dass eine starke Korrelation besteht
+3. Im Falle $0,3 < |r| \le 0,5$ sagen wir, dass eine relativ schwache Korrelation besteht
+4. Im Falle $0 < |r| \le 0, 3$ sagen wir, dass eine schwache Korrelation besteht
+5. Im Falle $|r| \simeq 0$ sagen wir, dass keine Korrelation besteht
+6. Wenn das Vorzeichen positiv ist, dann sagen wir: Es besteht ein direktes
+Verhältnis zwischen den Zufallsvariablen (die Werte sind proportional).
+Wenn das Vorzeichen negativ ist, dann sagen, dass wir: Es besteht ein indirektes Verhältnis zwischen den Zufallsvariablen (die Werte sind umgekehrt proportional)
+
+### Lineare Regression
 
 ## induktive Statistik 
 hier hab ich nicht aufgepasst 
 keine Ahnung
 <!-- TODO -->
-### Normalverteilung
+### Konfidenzintervall
+```
+konfint <- function(p, xbar, s, n){
+    p <- 0.5 + p/2
+    q <- qnorm(p, xbar, s)
+    og <- xbar + q*s /sqrt(n)   # obere Grenze
+    ug <- xbar - q*s /sqrt(n)   # obere Grenze
+    print("Die Grenzen vom Konfidenzintervall sind:")
+    kon<- c(ug,og)
+    print(kon)
+}
+```
 
+- 
+
+### Normalverteilung
