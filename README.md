@@ -199,7 +199,7 @@ Deutung:
 
 ### relative Schiefemass
 Formel:
-$S=\frac{N*M_{3}}{(N-1)*(N-2)*\sigma^3}$
+$S=\frac{N*M_{3}}{(N-1)*(N-2)*\sigma^{3}}$
 
 in R:
 ```
