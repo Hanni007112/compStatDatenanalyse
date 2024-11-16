@@ -226,7 +226,7 @@ $S_1\frac{3*(\overline{x} - modalwert)}{\sigma}$
 
 in R :
 ```
-S2 <- (mean(X)-modalwert)/sd(X)>
+S1 <- (mean(X)-modalwert)/sd(X)>
 ```
 
 Deutung: wie immer
@@ -238,7 +238,7 @@ $S_2\frac{\overline{x} - \widetilde{x}}{\sigma}$
 
 in R :
 ```
-S2 <- (mean(X)-median(X))/sd(X)>
+S2 <- (mean(X)-median(X))/sd(X)
 ```
 
 Deutung: wie immer
@@ -289,27 +289,27 @@ siehe 30.10.großeDatenalayse.R
 <!-- TODO -->
 **Streuungdiagramm**
 ```
-daxdaten <- EuStockMarkets[, 1] # unabhängige variable
-cacdaten <- EuStockMarkets[, 3] # abhängige variable
-length(daxdaten) == length(cacdaten) # Bedingung
+X <- EuStockMarkets[, 1] # unabhängige variable
+Y <- EuStockMarkets[, 3] # abhängige variable
+length(X) == length(Y) # Bedingung
 # plot(unabhängige variable, abhängige variable)
-plot(daxdaten, cacdaten)
+plot(X, Y)
 grid()
-abline(v=mean(daxdaten))
-abline(h=mean(cacdaten))
+abline(v=mean(X))
+abline(h=mean(Y))
 ```
 
 **Lineares Modell erstellen**
 ```
 # lm(abhängige variable, unabhängige variable)
-lmdaxcac <- lm(cacdaten ~ daxdaten)
+lmXY <- lm(Y ~ X)
 # Zeigt daten des lm an -> u.a R-Squared, Residualstandardabweichung...
-sum<-as.vector(summary(lmdaxcac))
+sum<-as.vector(summary(lmXY))
 ```
 
 **Korrelationsgerade**
 ```
-abline(coef(lmdaxcac), col="blue")
+abline(coef(lmXY), col="blue")
 ```
 
 **Korrelationskoeffizient**
@@ -319,16 +319,16 @@ r <- sqrt(sum[9])
 ```
 **Zusammenfassung**
 ```
-daxdaten <- EuStockMarkets[, 1] # unabhängige variable
-cacdaten <- EuStockMarkets[, 3] # abhängige variable
-length(daxdaten) == length(cacdaten)
-plot(daxdaten, cacdaten)
+X <- c(...) # unabhängige variable
+Y <- c(...) # abhängige variable
+length(X) == length(Y)
+plot(X, Y)
 grid()
-abline(v=mean(daxdaten))
-abline(h=mean(cacdaten))
-lmdaxcac <- lm(cacdaten ~ daxdaten)
-sum<-as.vector(summary(lmdaxcac))
-abline(coef(lmdaxcac), col="blue")
+abline(v=mean(X))
+abline(h=mean(X))
+lmXY <- lm(Y ~ X)
+sum<-as.vector(summary(lmXY))
+abline(coef(lmXY), col="blue")
 sqrt(sum[9])
 ```
 
@@ -359,7 +359,7 @@ cov <- sum((X- mean(X)) * (Y - mean(Y))) / (length(X) - 1)
 
 sdX <- sd(X)
 sdY <- sd(Y)
-myr <- cov / (X * Y)
+myr <- cov / (sdX * sdY)
 myr
 ```
 
@@ -375,6 +375,45 @@ Verhältnis zwischen den Zufallsvariablen (die Werte sind proportional).
 Wenn das Vorzeichen negativ ist, dann sagen, dass wir: Es besteht ein indirektes Verhältnis zwischen den Zufallsvariablen (die Werte sind umgekehrt proportional)
 
 ### Lineare Regression
+Ziel der einfachen linearen Regression ist es, den Wert einer abhängigen Variable aufgrund einer unabhängigen Variable vorherzusagen.a
+**Lineares Modell erstellen**
+```
+X <- c(...) unabhängige Var.
+Y <- c(...) abhängige Var.
+linreg <- lm(Y~X)
+abline
+```
+**Residuen**
+Differenz zwischen den tatsächlichen beobachteten Werten und den vorhergesagten Werten einer statistischen Analyse. Differenz zwischen Punkt und Regressionsgerade. 
+```
+residuals(linreg)
+```
+- y* = b1x + b2 ist die regressionsgerade x ist die unabhängige
+- y* werden häufig als schätzwerte bezeichnet
+- die differenz y - y* ist ein residuum (rest)
+
+explorative datenanalyse auf basis der regression
+```
+summary(linreg)
+```
+
+**Prognose erstellen**
+```
+b<-as.vector(coef(linreg))
+Infnov <- b[1] + b[2] * x_i
+```
+
+**Residualer Standartfehler**
+```
+N <- length(Y)
+resdf <- sqrt((N - 1)/(N - 2)) * sd(residuals(linreg))
+```
+
+**R-Squared berechen**
+```
+R2 <- 1 - sum(residuals(linreg)^2) / sum((Y - mean(Y))^2)
+# Perasons Korrelationskoeffizient
+```
 
 ## induktive Statistik 
 hier hab ich nicht aufgepasst 
@@ -396,3 +435,4 @@ konfint <- function(p, xbar, s, n){
 - 
 
 ### Normalverteilung
+siehe kurtosis, mehr haben wir nicht dazu
