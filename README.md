@@ -285,8 +285,7 @@ c <- IQR(X)/ (quantile(X,0.9) - quantile(X,0.1))
 ```
 
 ## lineares Modell
-siehe 30.10.großeDatenalayse.R
-<!-- TODO -->
+<!-- siehe 30.10.großeDatenalayse.R -->
 **Streuungdiagramm**
 ```
 X <- EuStockMarkets[, 1] # unabhängige variable
@@ -302,7 +301,7 @@ abline(h=mean(Y))
 **Lineares Modell erstellen**
 ```
 # lm(abhängige variable, unabhängige variable)
-lmXY <- lm(Y ~ X)
+lmXY <- lm(Y ~ X) 
 # Zeigt daten des lm an -> u.a R-Squared, Residualstandardabweichung...
 sum<-as.vector(summary(lmXY))
 ```
@@ -416,8 +415,6 @@ R2 <- 1 - sum(residuals(linreg)^2) / sum((Y - mean(Y))^2)
 ```
 
 ## induktive Statistik 
-hier hab ich nicht aufgepasst 
-keine Ahnung
 <!-- TODO -->
 ### Konfidenzintervall
 ```
@@ -430,9 +427,35 @@ konfint <- function(p, xbar, s, n){
     kon<- c(ug,og)
     print(kon)
 }
+``` 
+- p - Wert des Konfidenzintervalls
+- xbar - Mittelwert der Stichprobe
+- s - Standardabweichung
+- n - Stichprobenumfach
+
+### Wahrscheinlichkeiten der Normalverteilung
+```
+qnorm(p, mean, sd)
 ```
 
-- 
+### Standardabweichung der Grundgesamtheit
+```
+s <- sd(X) * sqrt((N-1)/N)
+```
+
+
 
 ### Normalverteilung
 siehe kurtosis, mehr haben wir nicht dazu
+**Berechnen**
+```
+x <- seq(my-3*s, my+3*s, by=s/8)
+y <- dnorm(x, my, s)
+```
+- seq(my-3*s, my+3*s, by=s/8) erstellt eine Sequenz von 𝑥 x-Werten, die den Bereich von 𝜇 − 3𝜎 bis 𝜇 + 3𝜎 abdecken (typisch für Normalverteilungen, da 99,7 % der Werte in diesem Bereich liegen)
+- dnorm(x, my, s) berechnet die Wahrscheinlichkeitsdichte der Normalverteilung mit Mittelwert 𝜇 und Standardabweichung 𝜎 für jeden Wert von 𝑥
+
+**Plot**
+```
+lines(x, y, col="purple")
+```
